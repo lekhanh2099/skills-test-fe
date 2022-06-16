@@ -1,130 +1,39 @@
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import React, { useCallback, useMemo, useRef, useState } from "react";
 
-import { MenuOutlined } from "@ant-design/icons";
-import { Table } from "antd";
-import { arrayMoveImmutable } from "array-move";
-import { getList } from "services/country";
+export const Main: React.FC = () => {
+  const containerStyle = useMemo(() => ({ width: "100%", height: "100%" }), []);
+  const gridStyle = useMemo(() => ({ height: "93%", width: "100%" }), []);
+  const [rowData, setRowData] = useState();
+  const [columnDefs, setColumnDefs] = useState([
+    { field: "athlete", minWidth: 200 },
+    { field: "age" },
+    { field: "country", minWidth: 150 },
+    { field: "year" },
+    { field: "date", minWidth: 150 },
+    { field: "sport", minWidth: 150 },
+    { field: "gold" },
+    { field: "silver" },
+    { field: "bronze" },
+    { field: "total" },
+  ]);
+  const defaultColDef = useMemo(() => {
+    return {
+      editable: true,
+      flex: 1,
+      minWidth: 100,
+      resizable: true,
+    };
+  }, []);
 
-// const handlerGetList = () => {
-//   fetch("https://www.ag-grid.com/example-assets/olympic-winners.json")
-//     .then(resp => resp.json())
-//     .then(data => setList(data));
-
-//   console.log(list);
-// };
-
-import {
-  SortableContainer,
-  SortableElement,
-  SortableHandle,
-} from "react-sortable-hoc";
-const DragHandle = SortableHandle(() => (
-  <MenuOutlined
-    style={{
-      cursor: "grab",
-      color: "#999",
-    }}
-  />
-));
-const columns = [
-  {
-    title: "Sort",
-    dataIndex: "sort",
-    width: 30,
-    className: "drag-visible",
-    render: () => <DragHandle />,
-  },
-  {
-    title: "Name",
-    dataIndex: "name",
-    className: "drag-visible",
-  },
-  {
-    title: "Age",
-    dataIndex: "age",
-  },
-  {
-    title: "Address",
-    dataIndex: "address",
-  },
-];
-const data = [
-  {
-    key: "1",
-    name: "John Brown",
-    age: 32,
-    address: "New York No. 1 Lake Park",
-    index: 0,
-  },
-  {
-    key: "2",
-    name: "Jim Green",
-    age: 42,
-    address: "London No. 1 Lake Park",
-    index: 1,
-  },
-  {
-    key: "3",
-    name: "Joe Black",
-    age: 32,
-    address: "Sidney No. 1 Lake Park",
-    index: 2,
-  },
-];
-const SortableItem = SortableElement(props => <tr {...props} />);
-const SortableBody = SortableContainer(props => <tbody {...props} />);
-
-export const Main = () => {
-  const [dataSource, setDataSource] = useState(data);
-
-  const onSortEnd = ({ oldIndex, newIndex }) => {
-    if (oldIndex !== newIndex) {
-      const newData = arrayMoveImmutable(
-        dataSource.slice(),
-        oldIndex,
-        newIndex
-      ).filter(el => !!el);
-      console.log("Sorted items: ", newData);
-      setDataSource(newData);
-    }
-  };
-
-  const DraggableContainer = props => (
-    <SortableBody
-      useDragHandle
-      disableAutoscroll
-      helperClass="row-dragging"
-      onSortEnd={onSortEnd}
-      {...props}
-    />
-  );
-
-  const DraggableBodyRow = ({ className, style, ...restProps }) => {
-    // function findIndex base on Table rowKey props and should always be a right array index
-    const index = dataSource.findIndex(
-      x => x.index === restProps["data-row-key"]
-    );
-    return <SortableItem index={index} {...restProps} />;
-  };
+  const onGridReady = useCallback(params => {
+    fetch("https://www.ag-grid.com/example-assets/olympic-winners.json")
+      .then(resp => resp.json())
+      .then(data => setRowData(data));
+  }, []);
 
   return (
-    <Table
-      pagination={false}
-      dataSource={dataSource}
-      columns={columns}
-      rowKey="index"
-      components={{
-        body: {
-          wrapper: DraggableContainer,
-          row: DraggableBodyRow,
-        },
-      }}
-    />
+    <>
+      <div style={containerStyle}>ádsadas</div>
+    </>
   );
 };
