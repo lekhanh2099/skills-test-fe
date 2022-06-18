@@ -1,10 +1,11 @@
 import "antd/dist/antd.min.css";
-import { StyledThemeProvider } from "definitions/styled-components";
+
 import { QueryClient, QueryClientProvider } from "react-query";
-import { Provider } from "react-redux";
-import store from "redux/store";
 
 import Home from "pages";
+import { Provider } from "react-redux";
+import { StyledThemeProvider } from "definitions/styled-components";
+import store from "redux/store";
 
 function App(): JSX.Element {
   const queryClient = new QueryClient();
@@ -12,9 +13,7 @@ function App(): JSX.Element {
     <StyledThemeProvider>
       <QueryClientProvider client={queryClient}>
         <Provider store={store}>
-          <div className="App">
-            <Home />
-          </div>
+          <Home />
         </Provider>
       </QueryClientProvider>
     </StyledThemeProvider>
